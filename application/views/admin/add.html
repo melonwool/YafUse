@@ -26,7 +26,7 @@
         <label>邮箱</label>
         <input type="text" name="email" id="email" placeholder="请填写正确格式的邮箱"/>
         <div class="btn-toolbar">
-            <a  class="btn btn-primary" id="send">确定</a>
+            <a  class="btn btn-primary" id="sure">确定</a>
         </div>        
     </form>
       </div>
@@ -34,72 +34,28 @@
 </div>
 <script type="text/javascript">
 $(function(){
-     $('#bulletin-info').on({
-          focus: function(){
-            $(this).val("");
-          }
-     })
-    $("#select_channel").change(function () {
-      create_select_server($(this).val());
-    });
-    $('#send').click(function(){
+    $('#sure').click(function(){
         var message = $('#bulletin-info').val();
-        if(confirm("您的公告内容为："+message)){
-            $.ajax({
-                        url:'/actbulletin/add/',
-                        type:'POST',
-                        data:{
-                          message:message,
-                          type:'notice',
-                          game:$('#game').val(),
-                          channel:$('#select_channel').val(),
-                          server:$('#select_server_id').val(),
-                          startime:$('#startime').val(),
-                          endtime:$('#endtime').val(),
-                          space:$('#space').val()
-                        },
-                        success:function(msg){
-                          var mess = msg.split(':');
-                          if(mess[0]==100){
-                            alert(mess[1]);
-                          }else{
-                            alert(mess[1]);
-                          }
-                        }
-            })
-        }
+        $.ajax({
+                    url:'/admin/add/',
+                    type:'POST',
+                    data:{
+                      username:$("#username").val(),
+                      nickname:$("#nickname").val(),
+                      realname:$("#realname").val(),
+                      email:$("#email").val()
+                    },
+                    success:function(msg){
+                      var mess = msg.split(':');
+                      if(mess[0]==100){
+                        alert(mess[1]);
+                      }else{
+                        alert(mess[1]);
+                      }
+                    }
+        })
     })
 })
-    function create_select_server(channel){ 
-  $.ajax({
-      url: '/player/channelServerData',
-
-      type: 'POST',
-
-      data:{'select_channel' : channel},
-
-      dataType: 'json',
-
-      timeout: 5000,
-
-//      error: function(){alert('服务器错误');},
-
-      success: function(result){$('#server-id').html(get_select_server(result));}
-
-    });
-    }
-    
-    
-    function get_select_server(data){
-            var content = '<select id="select_server_id" >';
-                    content += '<option value="all" selected="selected">-区服-</option>';
-                    for(var i in data)
-                    {
-                                    content +='<option value="' +i+ '">' +data[i]+ '</option>';
-                    }
-                    content += '</select>';
-            return content;
-    }
 </script>
               <footer>
                   <hr>
