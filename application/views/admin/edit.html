@@ -1,0 +1,65 @@
+<div class="container">
+  <iframe name="hidden_ifm" style="display:none;" ></iframe>
+  <form class="form-horizontal" method="POST" action="/usr/edit/" target="hidden_ifm">
+    <fieldset>
+    <legend><small><strong>&sect; 修改已激活用户信息</strong></small></legend>
+    <div class="control-group">
+      <div class="controls">
+        <input style="width:302px" name="name" type="text" value="<?php echo $UsrInfo['name'];?>">
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <div class="input-append">
+          <input type="text" name="passwd" style="border-top-left-radius: 4px; border-bottom-left-radius: 4px;width:302px">
+        </div>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <select style="width:316px;border-top-right-radius: 0; border-bottom-right-radius: 0;" name="channel">
+        <?php foreach($channels as $k=>$v){ ?>
+        <option value="<?php echo $k;?>" <?php if($UsrInfo['channel']==$k){echo "selected";}?>><?php echo $v;?></option>
+        <?php }?>
+        </select>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <div class="input-append">
+          <input type="text" name="realname" style="border-top-left-radius: 4px; border-bottom-left-radius: 4px;width:302px" value="<?php echo $UsrInfo['realname'];?>">
+        </div>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <div class="input-append">
+          <input type="text" name="email"  style="border-top-left-radius: 4px; border-bottom-left-radius: 4px;width:302px" value="<?php echo $UsrInfo['email']?>">
+        </div>
+      </div>
+    </div>
+    <input type="hidden" name="id" value="<?php echo $UsrInfo['id'];?>"/>
+    <div class="control-group">
+      <div class="controls" id="usr-role">
+        <label class="radio">
+          <input type="radio" name="permission" id="permission" value="1" <?php if($UsrInfo['permission']==1){echo "checked";};?>> 
+          超级管理员 <a href="#" data-toggle="tooltip" data-placement="right" title="" data-original-title="【请您谨慎选择该项】。该类用户拥有系统下所有权限，且可设置其他用户权限"><i class="icon-question-sign"></i></a>
+        </label>
+        <label class="radio">
+          <input type="radio" name="permission" id="permission" value="2" <?php if($UsrInfo['permission']==2){echo "checked";};?>> 
+          渠道管理员 <a href="#" data-toggle="tooltip" data-placement="right" title="" data-original-title="该类用户拥有渠道下某些站点的管理权限，可添加删除该渠道查看用户组信息"><i class="icon-question-sign"></i></a>
+        </label>
+        <label class="radio">
+          <input type="radio" name="permission" id="permission" value="3" <?php if($UsrInfo['permission']==3){echo "checked";};?>>
+          查看类用户 <a href="#" data-toggle="tooltip" data-placement="right" title="" data-original-title="数据人员或合作商选择该权限，该类用户仅可查看某渠道数据，无修改配置等权限"><i class="icon-question-sign"></i></a>
+        </label>
+      </div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <button style="width:368px" type="submit" class="btn btn-success">确认修改</button>
+      </div>
+    </div>
+    </fieldset>
+  </form>
+</div>

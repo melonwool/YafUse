@@ -1,0 +1,73 @@
+<script type="text/javascript" src="/js/WdatePicker.js"></script>   
+    <div class="content">
+        <div class="header">
+            <h1 class="page-title">管理员列表</h1>
+        </div>
+            <ul class="breadcrumb">
+                <li><a href="/">后台管理</a> <span class="divider">/</span></li>
+                <li><a href="#">管理员设置</a> <span class="divider">/</span></li>
+                <li class="active">管理员列表</li>
+            </ul>
+        <div class="container-fluid">
+            <div class="row-fluid">
+<div class="well">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>用户名</th>
+          <th>昵称</th>
+          <th>真实姓名</th>
+          <th>邮箱</th>
+          <th style="width: 26px;"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach($usr_info as $user){?>
+          <tr>
+            <td><?php echo $user['id'];?></td>
+            <td><?php echo $user['username'];?></td>
+            <td><?php echo $user['nickname'];?></td>
+            <td><?php echo $user['realname'];?></td>
+            <td><?php echo $user['email'];?></td>
+            <td>
+                <a href="user.html"><i class="icon-pencil"></i></a>
+                <a href="javascript:void(0);" onclick="Delete(<?php echo $user['id'];?>)"><i class="icon-remove"></i></a>
+            </td>
+          </tr>
+        <?php } ?>
+      </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+function Delete(id){
+    if(confirm('您是否确定删除此公告？')){
+        $.ajax({
+                url:'/admin/del/',
+                type:'POST',
+                data:{
+                  id:id
+                },
+                success:function(msg){
+                  var mess = msg.split(':');
+                  if(mess[0]==100){
+                    alert(mess[1]);
+                    location.reload();
+                  }else{
+                    alert(mess[1]);
+                  }
+                }
+          })
+    }
+}
+</script>
+              <footer>
+                  <hr>
+                  <!-- Purchase a site license to remove this link from the footer: http://www.portnine.com/bootstrap-themes -->
+                  <p class="pull-right">A <a href="http://www.portnine.com/bootstrap-themes" target="_blank">Free Bootstrap Theme</a> by <a href="http://www.portnine.com" target="_blank">Portnine</a></p>
+
+                  <p>&copy; 2013 <a href="http://www.juaiwan.com" target="_blank">XXX</a></p>
+              </footer>
+            </div>
+        </div>
+    </div>

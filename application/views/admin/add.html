@@ -1,0 +1,113 @@
+<script type="text/javascript" src="/js/WdatePicker.js"></script>   
+    <div class="content">
+        <div class="header">
+            <h1 class="page-title">管理员列表</h1>
+        </div>
+            <ul class="breadcrumb">
+                <li><a href="/">后台管理</a> <span class="divider">/</span></li>
+                <li><a href="#">管理员设置</a> <span class="divider">/</span></li>
+                <li class="active">添加管理员</li>
+            </ul>
+        <div class="container-fluid">
+            <div class="row-fluid">
+<div class="well">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#">填写信息</a></li>
+    </ul>
+    <div id="myTabContent" class="tab-content">
+      <div class="tab-pane active in" id="home">
+    <form id="tab">
+        <label>用户名</label>
+        <input type="text" name="username" id="username" placeholder="请填写用户名"/>
+        <label>昵称</label>
+        <input type="text" name="nickname" id="nickname" placeholder="请填写昵称"/>
+        <label>真实姓名</label>
+        <input type="text" name="realname" id="realname" placeholder="请填写真实姓名"/>
+        <label>邮箱</label>
+        <input type="text" name="email" id="email" placeholder="请填写正确格式的邮箱"/>
+        <div class="btn-toolbar">
+            <a  class="btn btn-primary" id="send">确定</a>
+        </div>        
+    </form>
+      </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+     $('#bulletin-info').on({
+          focus: function(){
+            $(this).val("");
+          }
+     })
+    $("#select_channel").change(function () {
+      create_select_server($(this).val());
+    });
+    $('#send').click(function(){
+        var message = $('#bulletin-info').val();
+        if(confirm("您的公告内容为："+message)){
+            $.ajax({
+                        url:'/actbulletin/add/',
+                        type:'POST',
+                        data:{
+                          message:message,
+                          type:'notice',
+                          game:$('#game').val(),
+                          channel:$('#select_channel').val(),
+                          server:$('#select_server_id').val(),
+                          startime:$('#startime').val(),
+                          endtime:$('#endtime').val(),
+                          space:$('#space').val()
+                        },
+                        success:function(msg){
+                          var mess = msg.split(':');
+                          if(mess[0]==100){
+                            alert(mess[1]);
+                          }else{
+                            alert(mess[1]);
+                          }
+                        }
+            })
+        }
+    })
+})
+    function create_select_server(channel){ 
+  $.ajax({
+      url: '/player/channelServerData',
+
+      type: 'POST',
+
+      data:{'select_channel' : channel},
+
+      dataType: 'json',
+
+      timeout: 5000,
+
+//      error: function(){alert('服务器错误');},
+
+      success: function(result){$('#server-id').html(get_select_server(result));}
+
+    });
+    }
+    
+    
+    function get_select_server(data){
+            var content = '<select id="select_server_id" >';
+                    content += '<option value="all" selected="selected">-区服-</option>';
+                    for(var i in data)
+                    {
+                                    content +='<option value="' +i+ '">' +data[i]+ '</option>';
+                    }
+                    content += '</select>';
+            return content;
+    }
+</script>
+              <footer>
+                  <hr>
+                  <!-- Purchase a site license to remove this link from the footer: http://www.portnine.com/bootstrap-themes -->
+                  <p class="pull-right">A <a href="http://www.portnine.com/bootstrap-themes" target="_blank">Free Bootstrap Theme</a> by <a href="http://www.portnine.com" target="_blank">Portnine</a></p>
+
+                  <p>&copy; 2013 <a href="http://www.juaiwan.com" target="_blank">XXX</a></p>
+              </footer>
+            </div>
+        </div>
+    </div>
