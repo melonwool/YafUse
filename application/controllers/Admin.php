@@ -25,18 +25,22 @@ class AdminController extends Yaf_Controller_Abstract {
 	{
 		if($_POST){
 			$Posts = $this->getRequest()->getPost();
-			$Posts['passwd'] = md5($Posts['passwd']);
-			$Posts['time'] = date("Y-m-d H:i:s");
-			$Posts['lastime'] = date("Y-m-d H:i:s");
+			$Posts['password'] = md5($Posts['password']);
+			$Posts['repassword'] = md5($Posts['repassword']);
 			foreach($Posts as $v){
 				if(empty($v)){
-					echo "<script>alert('请正确填写，不能为空！')</script>";exit;
+					exit("101:请正确填写，不能为空哦！");
 				}
 			}
-			if($this->Usr->AddUsr($Posts)){
-				echo "<script>location.href='/usr/index/'</script>";exit;
+			if($Posts['password']!=$Posts['repassword']){
+				exit("102:两次密码输入不一致!");
+			}
+			unset($Posts['repassword']);
+			$Posts['is_del'] = 0;
+			if($this->_Admin->AddUsr($Posts)){
+				exit("100:添加成功！");
 			}else{
-				echo "<script>alert('添加失败');</script>";exit;
+				exit("103:添加失败!");
 			}
 		}else{
 			$this->_layout->setLayoutFile('layout.html');

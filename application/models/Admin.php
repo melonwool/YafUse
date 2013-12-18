@@ -6,11 +6,13 @@ class AdminModel extends Db_Base{
 	 */
 	public function LoginUsr($usr, $passwd)
 	{
-		$usrinfo = $this->_db->select($this->_table,array('username'=>$usr,'password'=>$passwd));
+		$usrfingo = $this->_db->selectFirst($this->_table,array('username'=>$usr,'password'=>$passwd));
+		//$usrinfo = $this->_db->select($this->_table,array('username'=>$usr,'password'=>$passwd),1);
+		//可以用query方法
 		//$sql = "SELECT * FROM $this->_table WHERE username='{$usr}' AND password='{$passwd}' AND is_del='0'";
-		$usrinfo = $this->_db->query($sql);
+		//$usrinfo = $this->_db->query($sql);
 		if($usrinfo){
-			return $usrinfo[0];
+			return $usrinfo;
 		}else{
 			return false;
 		}
@@ -20,9 +22,10 @@ class AdminModel extends Db_Base{
 	 */
 	public function ShowUsers()
 	{
-		$sql = "SELECT * FROM $this->_table WHERE is_del='0'";
-		$this->_db = new Db_Mysql ($this->_config->database->config->toArray());
-		return $this->_db->query($sql);
+		//$sql = "SELECT * FROM $this->_table WHERE is_del='0'";
+		//return $this->_db->query($sql);
+		$usrinfo = $this->_db->select($this->_table,array('is_del'=>'0'));		
+		return $usrinfo;
 	}
 	/**
 	 * 
@@ -31,7 +34,6 @@ class AdminModel extends Db_Base{
 	 */
 	public function AddUsr($info)
 	{
-		$this->_db = new Db_Mysql ($this->_config->database->config->toArray());
 		if($this->_db->insert($this->_table,$info)){
 			return true;
 		}else{

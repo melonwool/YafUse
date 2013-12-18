@@ -30,7 +30,7 @@ class Db_Mysql
     public function configMaster($host, $name, $user, $password, $port = null, $driver = 'mysql')
     {
         if (isset($this->pdo_master)) {
-            show_error('请勿重连主库');
+            throw new Exception ('请勿重连主库');
         }
         $this->config_master = array(
             'driver' => $driver,
@@ -45,7 +45,7 @@ class Db_Mysql
     public function configSlave($host, $name, $user, $password, $port = null, $driver = 'mysql')
     {
         if (isset($this->pdo_slave)) {
-            show_error('请勿重连从库');
+            throw new Exception ('请勿重连从库');
         }
         $this->config_slave = array(
             'driver' => $driver,
@@ -68,7 +68,7 @@ class Db_Mysql
             $dsn .= ";dbname=$name";
             $conn = new PDO($dsn, $user, $password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+            
             return $conn;
         } catch (PDOException $e) {
             return false;
@@ -172,13 +172,13 @@ class Db_Mysql
             }
         } catch (PDOException $e) {
             if (self::$SHOW_ERR == true) {
-                show_error('DATABASE WRAPPER::' . print_r($e, true));
+                throw new Exception ($e);
             }
             $this->pdo_exception = $e;
             return false;
         } catch (Exception $e) {
             if (self::$SHOW_ERR == true) {
-                show_error('DATABASE WRAPPER::' . print_r($e, true));
+                throw new Exception ($e);
             }
             $this->pdo_exception = $e;
             return false;
@@ -277,13 +277,13 @@ class Db_Mysql
             return ($successful_delete == true) ? $pstmt->rowCount() : false;
         } catch (PDOException $e) {
             if (self::$SHOW_ERR == true) {
-                show_error('DATABASE WRAPPER::' . print_r($e, true));
+                throw new Exception ($e);
             }
             $this->pdo_exception = $e;
             return false;
         } catch (Exception $e) {
             if (self::$SHOW_ERR == true) {
-                show_error('DATABASE WRAPPER::' . print_r($e, true));
+                throw new Exception ($e);
             }
             $this->pdo_exception = $e;
             return false;
@@ -364,13 +364,13 @@ class Db_Mysql
             return ($successful_update == true) ? $pstmt->rowCount() : false;
         } catch (PDOException $e) {
             if (self::$SHOW_ERR == true) {
-                show_error('DATABASE WRAPPER::' . print_r($e, true));
+                throw new Exception ($e);
             }
             $this->pdo_exception = $e;
             return false;
         } catch (Exception $e) {
             if (self::$SHOW_ERR == true) {
-                show_error('DATABASE WRAPPER::' . print_r($e, true));
+                throw new Exception ($e);
             }
             $this->pdo_exception = $e;
             return false;
@@ -443,13 +443,13 @@ class Db_Mysql
             return $newID;
         } catch (PDOException $e) {
             if (self::$SHOW_ERR == true) {
-                show_error('DATABASE WRAPPER::' . print_r($e, true));
+                throw new Exception ($e);
             }
             $this->pdo_exception = $e;
             return false;
         } catch (Exception $e) {
             if (self::$SHOW_ERR == true) {
-                show_error('DATABASE WRAPPER::' . print_r($e, true));
+                throw new Exception ($e);
             }
             $this->pdo_exception = $e;
             return false;
@@ -534,14 +534,14 @@ class Db_Mysql
             return true;
         } catch (PDOException $e) {
             if (self::$SHOW_ERR == true) {
-                show_error('DATABASE WRAPPER::' . print_r($e, true));
+                throw new Exception ($e);
             }
             $this->pdo_exception = $e;
             $this->getMaster()->rollback();
             return false;
         } catch (Exception $e) {
             if (self::$SHOW_ERR == true) {
-                show_error('DATABASE WRAPPER::' . print_r($e, true));
+                throw new Exception ($e);
             }
             $this->pdo_exception = $e;
             $this->getMaster()->rollback();
@@ -578,13 +578,13 @@ class Db_Mysql
             return ($result == true) ? $pstmt->rowCount() : false;
         } catch (PDOException $e) {
             if (self::$SHOW_ERR == true) {
-                show_error('DATABASE WRAPPER::' . print_r($e, true));
+                throw new Exception ($e);
             }
             $this->pdo_exception = $e;
             return false;
         } catch (Exception $e) {
             if (self::$SHOW_ERR == true) {
-                show_error('DATABASE WRAPPER::' . print_r($e, true));
+                throw new Exception ($e);
             }
             $this->pdo_exception = $e;
             return false;
@@ -619,13 +619,13 @@ class Db_Mysql
             return $pstmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             if (self::$SHOW_ERR == true) {
-                show_error('DATABASE WRAPPER::' . print_r($e, true));
+                throw new Exception ($e);
             }
             $this->pdo_exception = $e;
             return false;
         } catch (Exception $e) {
             if (self::$SHOW_ERR == true) {
-                show_error('DATABASE WRAPPER::' . print_r($e, true));
+                    throw new Exception ($e);
             }
             $this->pdo_exception = $e;
             return false;

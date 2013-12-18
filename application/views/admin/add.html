@@ -1,4 +1,3 @@
-<script type="text/javascript" src="/js/WdatePicker.js"></script>   
     <div class="content">
         <div class="header">
             <h1 class="page-title">管理员列表</h1>
@@ -19,6 +18,10 @@
     <form id="tab">
         <label>用户名</label>
         <input type="text" name="username" id="username" placeholder="请填写用户名"/>
+        <label>密码</label>
+        <input type="password" name="password" id="password" placeholder="请填写密码"/>        
+        <label>确认密码</label>
+        <input type="password" name="repassword" id="repassword" placeholder="确认密码"/>        
         <label>昵称</label>
         <input type="text" name="nickname" id="nickname" placeholder="请填写昵称"/>
         <label>真实姓名</label>
@@ -35,12 +38,13 @@
 <script type="text/javascript">
 $(function(){
     $('#sure').click(function(){
-        var message = $('#bulletin-info').val();
         $.ajax({
                     url:'/admin/add/',
                     type:'POST',
                     data:{
                       username:$("#username").val(),
+                      password:$("#password").val(),
+                      repassword:$("#repassword").val(),
                       nickname:$("#nickname").val(),
                       realname:$("#realname").val(),
                       email:$("#email").val()

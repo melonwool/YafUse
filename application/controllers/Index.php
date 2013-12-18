@@ -16,7 +16,7 @@ class IndexController extends Yaf_Controller_Abstract {
             $name = $this->getRequest()->getPost('usrname');
             $pwd = $this->getRequest()->getPost('pwd');
             $Admin = new AdminModel();
-            if($Admin->LoginUsr($name, $pwd)){
+            if(!$Admin->LoginUsr($name, md5($pwd))){
                 exit("101:用户名或密码错误!");
             }
             $_SESSION['username'] = $name;
