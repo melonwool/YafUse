@@ -16,6 +16,7 @@ class AdminController extends Yaf_Controller_Abstract {
 		//获取用户信息
 		$User_info = $this->_Admin->ShowUsers();
 		$this->_view->usr_info = $User_info;
+		$this->_layout->admin = true;
 		$this->_layout->setLayoutFile('layout.html');
 	}
 	/**
@@ -43,6 +44,7 @@ class AdminController extends Yaf_Controller_Abstract {
 				exit("103:添加失败!");
 			}
 		}else{
+			$this->_layout->add = true;
 			$this->_layout->setLayoutFile('layout.html');
 		}
 	}
