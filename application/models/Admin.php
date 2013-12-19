@@ -6,7 +6,7 @@ class AdminModel extends Db_Base{
 	 */
 	public function LoginUsr($usr, $passwd)
 	{
-		$usrfingo = $this->_db->selectFirst($this->_table,array('username'=>$usr,'password'=>$passwd));
+		$usrinfo = $this->_db->selectFirst($this->_table,array('username'=>$usr,'password'=>$passwd));
 		//$usrinfo = $this->_db->select($this->_table,array('username'=>$usr,'password'=>$passwd),1);
 		//可以用query方法
 		//$sql = "SELECT * FROM $this->_table WHERE username='{$usr}' AND password='{$passwd}' AND is_del='0'";
