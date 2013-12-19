@@ -1,65 +1,75 @@
-<div class="container">
-  <iframe name="hidden_ifm" style="display:none;" ></iframe>
-  <form class="form-horizontal" method="POST" action="/usr/edit/" target="hidden_ifm">
-    <fieldset>
-    <legend><small><strong>&sect; 修改已激活用户信息</strong></small></legend>
-    <div class="control-group">
-      <div class="controls">
-        <input style="width:302px" name="name" type="text" value="<?php echo $UsrInfo['name'];?>">
-      </div>
-    </div>
-    <div class="control-group">
-      <div class="controls">
-        <div class="input-append">
-          <input type="text" name="passwd" style="border-top-left-radius: 4px; border-bottom-left-radius: 4px;width:302px">
+    <div class="content">
+        <div class="header">
+            <h1 class="page-title">管理员列表</h1>
         </div>
+            <ul class="breadcrumb">
+                <li><a href="/">后台管理</a> <span class="divider">/</span></li>
+                <li><a href="#">管理员设置</a> <span class="divider">/</span></li>
+                <li class="active">编辑管理员</li>
+            </ul>
+        <div class="container-fluid">
+            <div class="row-fluid">
+<div class="well">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#">填写信息</a></li>
+    </ul>
+    <div id="myTabContent" class="tab-content">
+      <div class="tab-pane active in" id="home">
+    <form id="tab">
+        <label>用户名</label>
+        <input type="text" name="username" id="username" value="<?php echo $UsrInfo['username'];?>"/>
+        <label>密码</label>
+        <input type="password" name="password" id="password" value=""/>        
+        <label>确认密码</label>
+        <input type="password" name="repassword" id="repassword" value=""/>        
+        <label>昵称</label>
+        <input type="text" name="nickname" id="nickname" value="<?php echo $UsrInfo['nickname'];?>"/>
+        <label>真实姓名</label>
+        <input type="text" name="realname" id="realname" value="<?php echo $UsrInfo['realname'];?>"/>
+        <label>邮箱</label>
+        <input type="text" name="email" id="email" value="<?php echo $UsrInfo['email'];?>"/>
+        <input type="hidden" name="id" id="id" value=<?php echo $UsrInfo['id']; ?> />
+        <div class="btn-toolbar">
+            <a  class="btn btn-primary" id="sure">确定</a>
+        </div>        
+    </form>
       </div>
-    </div>
-    <div class="control-group">
-      <div class="controls">
-        <select style="width:316px;border-top-right-radius: 0; border-bottom-right-radius: 0;" name="channel">
-        <?php foreach($channels as $k=>$v){ ?>
-        <option value="<?php echo $k;?>" <?php if($UsrInfo['channel']==$k){echo "selected";}?>><?php echo $v;?></option>
-        <?php }?>
-        </select>
-      </div>
-    </div>
-    <div class="control-group">
-      <div class="controls">
-        <div class="input-append">
-          <input type="text" name="realname" style="border-top-left-radius: 4px; border-bottom-left-radius: 4px;width:302px" value="<?php echo $UsrInfo['realname'];?>">
-        </div>
-      </div>
-    </div>
-    <div class="control-group">
-      <div class="controls">
-        <div class="input-append">
-          <input type="text" name="email"  style="border-top-left-radius: 4px; border-bottom-left-radius: 4px;width:302px" value="<?php echo $UsrInfo['email']?>">
-        </div>
-      </div>
-    </div>
-    <input type="hidden" name="id" value="<?php echo $UsrInfo['id'];?>"/>
-    <div class="control-group">
-      <div class="controls" id="usr-role">
-        <label class="radio">
-          <input type="radio" name="permission" id="permission" value="1" <?php if($UsrInfo['permission']==1){echo "checked";};?>> 
-          超级管理员 <a href="#" data-toggle="tooltip" data-placement="right" title="" data-original-title="【请您谨慎选择该项】。该类用户拥有系统下所有权限，且可设置其他用户权限"><i class="icon-question-sign"></i></a>
-        </label>
-        <label class="radio">
-          <input type="radio" name="permission" id="permission" value="2" <?php if($UsrInfo['permission']==2){echo "checked";};?>> 
-          渠道管理员 <a href="#" data-toggle="tooltip" data-placement="right" title="" data-original-title="该类用户拥有渠道下某些站点的管理权限，可添加删除该渠道查看用户组信息"><i class="icon-question-sign"></i></a>
-        </label>
-        <label class="radio">
-          <input type="radio" name="permission" id="permission" value="3" <?php if($UsrInfo['permission']==3){echo "checked";};?>>
-          查看类用户 <a href="#" data-toggle="tooltip" data-placement="right" title="" data-original-title="数据人员或合作商选择该权限，该类用户仅可查看某渠道数据，无修改配置等权限"><i class="icon-question-sign"></i></a>
-        </label>
-      </div>
-    </div>
-    <div class="control-group">
-      <div class="controls">
-        <button style="width:368px" type="submit" class="btn btn-success">确认修改</button>
-      </div>
-    </div>
-    </fieldset>
-  </form>
+  </div>
 </div>
+<script type="text/javascript">
+$(function(){
+    $('#sure').click(function(){
+        $.ajax({
+                    url:'/admin/edit/',
+                    type:'POST',
+                    data:{
+                      id:$("#id").val(),
+                      username:$("#username").val(),
+                      password:$("#password").val(),
+                      repassword:$("#repassword").val(),
+                      nickname:$("#nickname").val(),
+                      realname:$("#realname").val(),
+                      email:$("#email").val()
+                    },
+                    success:function(msg){
+                      var mess = msg.split(':');
+                      if(mess[0]==100){
+                        alert(mess[1]);
+                      }else{
+                        alert(mess[1]);
+                      }
+                    }
+        })
+    })
+})
+</script>
+              <footer>
+                  <hr>
+                  <!-- Purchase a site license to remove this link from the footer: http://www.portnine.com/bootstrap-themes -->
+                  <p class="pull-right">A <a href="http://www.portnine.com/bootstrap-themes" target="_blank">Free Bootstrap Theme</a> by <a href="http://www.portnine.com" target="_blank">Portnine</a></p>
+
+                  <p>&copy; 2013 <a href="http://www.juaiwan.com" target="_blank">XXX</a></p>
+              </footer>
+            </div>
+        </div>
+    </div>

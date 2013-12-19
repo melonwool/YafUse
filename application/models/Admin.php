@@ -46,10 +46,8 @@ class AdminModel extends Db_Base{
 	 */
 	public function GetUsrInfo($id)
 	{
-		$sql = "SELECT * FROM $this->_table WHERE id=$id ";
-		$this->_db = new Db_Mysql ($this->_config->database->config->toArray());
-		$usrinfo = $this->_db->query($sql);
-		return $usrinfo[0];
+		$usrinfo = $this->_db->selectFirst($this->_table,array('id'=>$id));
+		return $usrinfo;
 	}
 	/**
 	 * 编辑用户
@@ -58,7 +56,6 @@ class AdminModel extends Db_Base{
 	 */
 	public function EditUsr($id,$params)
 	{
-		$this->_db = new Db_Mysql ($this->_config->database->config->toArray());
 		$wheres = array('id'=>$id);
 		if($this->_db->update($this->_table, $params, $wheres)){
 			return true;

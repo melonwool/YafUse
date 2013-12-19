@@ -30,7 +30,7 @@
             <td><?php echo $user['realname'];?></td>
             <td><?php echo $user['email'];?></td>
             <td>
-                <a href="javascript:void(0);"><i class="icon-pencil"></i></a>
+                <a href="javascript:void(0);" onclick="Edit(<?php echo $user['id'];?>)"><i class="icon-pencil"></i></a>
                 <a href="javascript:void(0);" onclick="Delete(<?php echo $user['id'];?>)"><i class="icon-remove"></i></a>
             </td>
           </tr>
@@ -60,24 +60,7 @@ function Delete(id){
     }
 }
 function Edit(id){
-    if(confirm('您是否确定编辑此公告？')){
-        $.ajax({
-                url:'/admin/edit/',
-                type:'POST',
-                data:{
-                  id:id
-                },
-                success:function(msg){
-                  var mess = msg.split(':');
-                  if(mess[0]==100){
-                    alert(mess[1]);
-                    location.reload();
-                  }else{
-                    alert(mess[1]);
-                  }
-                }
-          })
-    }
+  location.href='/admin/edit/?id='+id;
 }
 </script>
               <footer>

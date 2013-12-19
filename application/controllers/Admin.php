@@ -57,26 +57,31 @@ class AdminController extends Yaf_Controller_Abstract {
 			$Posts = $this->getRequest()->getPost();
 			$id = $Posts['id'];
 			unset($Posts['id']);
-			foreach($Posts as $k => $v)
-			{
-				if(empty($v)){
+			$Posts['password'] = md5($Posts['password']);
+			$Posts['repassword'] = md5($Posts['repassword']);
+			if($Posts['password']!=$Posts['repassword']){
+				exit("102:两次密码输入不一致!");
+			}
+			foreach($Posts as $k=>$v){
+				if($k=='password' || $k=='repassword'){
 					unset($Posts[$k]);
+				}else{
+					if(empty($v)){
+						exit("101:请正确填写，不能为空哦！");
+					}
 				}
 			}
-			if($this->Usr->EditUsr($id,$Posts)){
-				echo "<script>alert('修改成功');location.href='/usr/edit/?id={$id}';</script>";exit;
+			if($this->_Admin->EditUsr($id,$Posts)){
+				exit("100:修改成功!");
 			}else{
-				echo "<script>alert('修改失败');</script>";exit;
+				exit("103:修改失败!");
 			}
 		}
 		//获取用户信息
 		$id = $this->getRequest()->getQuery('id');
 		//获取用户信息
-		$UsrInfo = $this->Usr->GetUsrInfo($id);
-		$channels = $this->_config->app->usechannel->toArray();
+		$UsrInfo = $this->_Admin->GetUsrInfo($id);
 		$this->_view->UsrInfo = $UsrInfo;
-		$this->_view->channels = $channels;
-		$this->_layout->meta_title = '用户编辑';
 		$this->_layout->setLayoutFile('layout.html');		
 	}
 	/**
