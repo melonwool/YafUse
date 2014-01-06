@@ -5,7 +5,9 @@ class IndexController extends Yaf_Controller_Abstract {
 
     public function init(){
         //使用layout页面布局
-        $this->_layout = Yaf_Registry::get('layout');
+        $this->_layout = new LayoutPlugin('layout.html');
+        $this->dispatcher = Yaf_Registry::get("dispatcher");
+        $this->dispatcher->registerPlugin($this->_layout);
         $this->_config = Yaf_Registry::get("config");
     }
     /*首页展示*/

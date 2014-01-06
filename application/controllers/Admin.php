@@ -17,7 +17,6 @@ class AdminController extends Yaf_Controller_Abstract {
 		$User_info = $this->_Admin->ShowUsers();
 		$this->_view->usr_info = $User_info;
 		$this->_layout->admin = true;
-		$this->_layout->setLayoutFile('layout.html');
 	}
 	/**
 	 * 用户添加
@@ -45,7 +44,6 @@ class AdminController extends Yaf_Controller_Abstract {
 			}
 		}else{
 			$this->_layout->add = true;
-			$this->_layout->setLayoutFile('layout.html');
 		}
 	}
 	/**
@@ -82,7 +80,6 @@ class AdminController extends Yaf_Controller_Abstract {
 		//获取用户信息
 		$UsrInfo = $this->_Admin->GetUsrInfo($id);
 		$this->_view->UsrInfo = $UsrInfo;
-		$this->_layout->setLayoutFile('layout.html');		
 	}
 	/**
 	 * 删除用户
@@ -101,6 +98,5 @@ class AdminController extends Yaf_Controller_Abstract {
 	public function PasswdAction()
 	{
 		$this->_layout->meta_title = '修改密码';
-		$this->_layout->setLayoutFile('layout.html');
 	}
 }

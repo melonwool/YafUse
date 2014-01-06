@@ -52,8 +52,6 @@ class Bootstrap extends Yaf_Bootstrap_Abstract {
      * layout页面布局
      */
     public function _initLayout(Yaf_Dispatcher $dispatcher){
-        $this->_layout = new LayoutPlugin($this->_config->application->document,$this->_config->application->layoutpath);
-        $dispatcher->registerPlugin($this->_layout);
-        Yaf_Registry::set('layout', $this->_layout);
+        Yaf_Registry::set('dispatcher', $dispatcher);
     }
 }
