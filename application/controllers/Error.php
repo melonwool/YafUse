@@ -7,9 +7,8 @@ class ErrorController extends Yaf_Controller_Abstract {
         $this->_config = Yaf_Application::app()->getConfig();
     }
 
-    public function errorAction() {
-        $exception = $this->getRequest()->getParam('exception');
-
+    public function errorAction($exception) {
+		//$exception = $this->getRequest()->getParam('exception');
         /*是否开启报错*/
         $showErrors = $this->_config->application->showErrors;
         /*报错以后记录日志*/
@@ -17,11 +16,15 @@ class ErrorController extends Yaf_Controller_Abstract {
         $error_message = $exception->getMessage();
         //$this->writeLog(date('Y-m-d'),$error_trace.$error_message);        
         if($showErrors){
-            $this->_view->trace = ($showErrors) ? $exception->getTraceAsString() : '';
-            $this->_view->message = ($showErrors) ? $exception->getMessage() : '';            
+			$this->_view->Errortype = get_class($exception);
+            $this->_view->trace = $error_trace;
+            $this->_view->message = $error_message;
+			$this->_view->exception = $exception;
         }else{     
-            header('Content-Type: text/html;Charset=UTF-8');     
-            echo "您请求的页面正繁忙，请稍后再试!";exit;
+            header('Content-Type: text/html;Charset=UTF-8');
+			//错误跳转地址
+			header('Location:'.$this->_config->application->ErrorUrl);
+            exit("您请求的页面正繁忙，请稍后再试!");
         }
     }
 
@@ -36,8 +39,9 @@ class ErrorController extends Yaf_Controller_Abstract {
     }
     
     public  function writeLog($filename, $message='') {
-        $filename = PUB_PATH . "log/{$filename}.log";
+        $filename = PUB_PATH . "/log/PHPError{$filename}.log";
         $datime = date("Y-m-d H:i:s")." ";
         file_put_contents($filename, $datime.$message."\n", FILE_APPEND);
-    }    
+    } 
 }
+

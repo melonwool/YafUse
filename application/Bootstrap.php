@@ -20,32 +20,23 @@ class Bootstrap extends Yaf_Bootstrap_Abstract {
     /**
      * [报错设置]
      */
+	/*
     public function _initErrors(){
         if($this->_config->application->showErrors){
             error_reporting (-1);
-            /*报错是否开启，On开启*/
+            //报错是否开启
             ini_set('display_errors','On');
             set_error_handler('handleError', E_ALL);
         }else{
             error_reporting (-1);
             set_error_handler('handleError', E_ALL);
         }
-    }
-    public function _initNamespaces(){
-        Yaf_Loader::getInstance()->registerLocalNameSpace(array("Juaiwan"));
-    }
+	}*/
     /**
      * [默认路由设置]
      */
     public function _initRoutes(){
-        Yaf_Dispatcher::getInstance()->getRouter()->addRoute(
-            "paging_example",
-            new Yaf_Route_Regex(
-                "#^/index/page/(\d+)#",
-                array('controller' => "index"),
-                array(1 => "page")
-            )
-        );
+		$router = Yaf_Dispatcher::getInstance()->getRouter();
         
     }
     /**
