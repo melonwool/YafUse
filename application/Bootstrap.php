@@ -9,17 +9,9 @@ class Bootstrap extends Yaf_Bootstrap_Abstract {
         Yaf_Registry::set('config', $this->_config);
     }
 
-    /*
-     * initIncludePath is only required because zend components have a shit load of
-     * include_once calls everywhere. Other libraries could probably just use
-     * the autoloader (see _initNamespaces below).
-     */
     public function _initIncludePath(){
         set_include_path(get_include_path() . PATH_SEPARATOR . $this->_config->application->library);
     }
-    /**
-     * [报错设置]
-     */
 	/*
     public function _initErrors(){
         if($this->_config->application->showErrors){
@@ -33,11 +25,12 @@ class Bootstrap extends Yaf_Bootstrap_Abstract {
         }
 	}*/
     /**
-     * [默认路由设置]
+     * [路由设置]
      */
     public function _initRoutes(){
 		$router = Yaf_Dispatcher::getInstance()->getRouter();
-        
+		//载入config中路由
+        $router->addConfig(Yaf_Registry::get('config')->routes);
     }
     /**
      * layout页面布局

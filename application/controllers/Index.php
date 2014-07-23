@@ -1,37 +1,34 @@
 <?php
-class IndexController extends Yaf_Controller_Abstract {
+class IndexController extends Base {
 
     private $_layout;
 
     public function init(){
-        //使用layout页面布局
-        $this->_layout = new LayoutPlugin('layout.html');
-        $this->dispatcher = Yaf_Registry::get("dispatcher");
-        $this->dispatcher->registerPlugin($this->_layout);
         $this->_config = Yaf_Registry::get("config");
+		$this->_req = $this->getRequest();
+		$this->_session = Yaf_Session::getInstance();
+		$this->_session->start();
     }
     /*首页展示*/
     public function IndexAction()
     {
-        if($_POST){
+        if($this->_req->isXmlHttpRequest()){
             //获取post提交的参数
-            $name = $this->getRequest()->getPost('usrname');
-            $pwd = $this->getRequest()->getPost('pwd');
+            $name = $this->_req->getPost('usrname');
+            $pwd = $this->_req->getPost('pwd');
             $Admin = new AdminModel();
             if(!$Admin->LoginUsr($name, md5($pwd))){
                 exit("101:用户名或密码错误!");
             }
-            $_SESSION['username'] = $name;
+			$this->_session->set('username',$name);
             exit("100:登录成功！");
         }
-        /*layout*/
-        $this->_layout->meta_title = '登录';
     }
 
     /*用户登录*/
     public function LogoutAction()
     {
-        unset($_SESSION['usrname']);
+		$this->_session->__unset('username');
         header('Location:/index/');
     }
 }

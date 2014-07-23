@@ -1,11 +1,10 @@
 <?php
-class AdminController extends Yaf_Controller_Abstract {
+class AdminController extends Base {
 
-	private $_layout;
 	public function init(){
+		parent::init()
 		//使用layout页面布局
 		$this->_layout = Yaf_Registry::get('layout');
-		$this->_config = Yaf_Registry::get('config');
 		$this->_Admin = new AdminModel();
 	}
 	/**
@@ -23,8 +22,8 @@ class AdminController extends Yaf_Controller_Abstract {
 	 */
 	public function AddAction()
 	{
-		if($_POST){
-			$Posts = $this->getRequest()->getPost();
+		if($this->_req->isXmlHttpRequest()){
+			$Posts = $this->_req->getPost();
 			$Posts['password'] = md5($Posts['password']);
 			$Posts['repassword'] = md5($Posts['repassword']);
 			foreach($Posts as $v){
@@ -51,8 +50,8 @@ class AdminController extends Yaf_Controller_Abstract {
 	 */
 	public function EditAction()
 	{
-		if($_POST){
-			$Posts = $this->getRequest()->getPost();
+		if($this->_req->isXmlHttpRequest()){
+			$Posts = $this->_req->getPost();
 			$id = $Posts['id'];
 			unset($Posts['id']);
 			$Posts['password'] = md5($Posts['password']);
@@ -76,7 +75,7 @@ class AdminController extends Yaf_Controller_Abstract {
 			}
 		}
 		//获取用户信息
-		$id = $this->getRequest()->getQuery('id');
+		$id = $this->_req->getQuery('id');
 		//获取用户信息
 		$UsrInfo = $this->_Admin->GetUsrInfo($id);
 		$this->_view->UsrInfo = $UsrInfo;
@@ -85,7 +84,7 @@ class AdminController extends Yaf_Controller_Abstract {
 	 * 删除用户
 	 */
 	public function DelAction(){
-		$id = $this->getRequest()->getPost('id');
+		$id = $this->_req->getPost('id');
 		if($this->Usr->Del($id)){
 			echo 1;exit;
 		}else{
