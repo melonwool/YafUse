@@ -29,6 +29,6 @@ class IndexController extends Base {
     public function LogoutAction()
     {
 		$this->_session->__unset('username');
-        header('Location:/index/');
+		$this->_req->setRedirect("/index/");
     }
 }
