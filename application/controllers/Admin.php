@@ -14,6 +14,7 @@ class AdminController extends Base {
 	{
 		//获取用户信息
 		$User_info = $this->_Admin->ShowUsers();
+		$User_info = AdminModel::model()->ShowUsers();
 		$this->_view->usr_info = $User_info;
 		$this->_layout->admin = true;
 	}

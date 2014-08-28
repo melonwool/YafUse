@@ -1,6 +1,10 @@
 <?php
 class AdminModel extends Db_Base{
 	protected $_table = "admin";
+
+    public static function model(){
+        return new self(); 
+    }
 	/**
 	 * 用户登录判断
 	 */
@@ -69,7 +73,6 @@ class AdminModel extends Db_Base{
 	 */
 	public function Del($id)
 	{
-		$sql = "DELECT FROM $this->_table WHERE id='{$id}' ";
 		$params = array('is_del'=>1);
 		$wheres = array('id'=>$id);
 		$this->_db = new Db_Mysql ($this->_config->database->config->toArray());
