@@ -1,13 +1,12 @@
 <?php
-class IndexController extends Base {
+class IndexController extends Controller_Base {
 
     private $_layout;
 
     public function init(){
-        $this->_config = Yaf_Registry::get("config");
-		$this->_req = $this->getRequest();
-		$this->_session = Yaf_Session::getInstance();
-		$this->_session->start();
+        parent::init();
+        //使用layout页面布局
+        $this->_layout = new LayoutPlugin('layout.html', APP_PATH . '/views/layout/');
     }
     /*首页展示*/
     public function IndexAction()
@@ -29,6 +28,6 @@ class IndexController extends Base {
     public function LogoutAction()
     {
 		$this->_session->__unset('username');
-		$this->_req->setRedirect("/index/");
+        header('Location:/index/');
     }
 }

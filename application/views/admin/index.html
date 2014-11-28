@@ -40,20 +40,20 @@
 </div>
 <script type="text/javascript">
 function Delete(id){
-    if(confirm('您是否确定删除此公告？')){
+    if(confirm('您是否确定删除？')){
         $.ajax({
                 url:'/admin/del/',
                 type:'POST',
                 data:{
                   id:id
                 },
+                dataType:'json',
                 success:function(msg){
-                  var mess = msg.split(':');
-                  if(mess[0]==100){
-                    alert(mess[1]);
+                  if(msg.errno==0){
+                    alert(msg.errmsg);
                     location.reload();
                   }else{
-                    alert(mess[1]);
+                    alert(msg.errmsg);
                   }
                 }
           })

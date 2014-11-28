@@ -51,12 +51,12 @@ $(function(){
                       realname:$("#realname").val(),
                       email:$("#email").val()
                     },
+                    dataType:'json',
                     success:function(msg){
-                      var mess = msg.split(':');
-                      if(mess[0]==100){
-                        alert(mess[1]);
+                      if(msg.errno==0){
+                        alert(msg.errmsg);
                       }else{
-                        alert(mess[1]);
+                        alert(msg.errmsg);
                       }
                     }
         })

@@ -1,47 +1,68 @@
 <?php
+/**
+ * yaf 框架报错类调用
+ *  默认错误会调用这个Controller 中 ErrorAction
+ */
 class ErrorController extends Yaf_Controller_Abstract {
-
     private $_config;
-
     public function init(){
         $this->_config = Yaf_Application::app()->getConfig();
     }
-
-    public function errorAction($exception) {
-		//$exception = $this->getRequest()->getParam('exception');
-        /*是否开启报错*/
-        $showErrors = $this->_config->application->showErrors;
-        /*报错以后记录日志*/
-        $error_trace = $exception->getTraceAsString();
-        $error_message = $exception->getMessage();
-        //$this->writeLog(date('Y-m-d'),$error_trace.$error_message);        
-        if($showErrors){
-			$this->_view->Errortype = get_class($exception);
-            $this->_view->trace = $error_trace;
-            $this->_view->message = $error_message;
-			$this->_view->exception = $exception;
-        }else{     
-            header('Content-Type: text/html;Charset=UTF-8');
-			//错误跳转地址
-			header('Location:'.$this->_config->application->ErrorUrl);
-            exit("您请求的页面正繁忙，请稍后再试!");
+    /**
+     * [具体错误处理]
+     * @param  Exception $exception [description]
+     * @return [type]               [description]
+     */
+    public function errorAction(Exception $exception)
+    {
+        Yaf_Dispatcher::getInstance()->autoRender(false);
+        if ($this->_config->application->showErrors) {
+            switch ($exception->getCode()) {
+                case YAF_ERR_AUTOLOAD_FAILED:
+                case YAF_ERR_NOTFOUND_MODULE:
+                case YAF_ERR_NOTFOUND_CONTROLLER:
+                case YAF_ERR_NOTFOUND_ACTION:
+                case YAF_ERR_NOTFOUND_VIEW:
+                    if (strpos($this->getRequest()->getRequestUri(), '.css') !== false ||
+                        strpos($this->getRequest()->getRequestUri(), '.jpg') !== false ||
+                        strpos($this->getRequest()->getRequestUri(), '.js') !== false ||
+                        strpos($this->getRequest()->getRequestUri(), '.png') !== false ||
+                        strpos($this->getRequest()->getRequestUri(), '.ico') !== false ||
+                        strpos($this->getRequest()->getRequestUri(), '.gif') !== false
+                    ) {
+                        header('HTTP/1.1 404 Not Found');
+                    }
+                default:
+                    //记录错误日志
+                    Log::error('error',$exception->getMessage() . ' IN FILE ' . $exception->getFile() . ' ON LINE ' . $exception->getLine()); 
+                    //显示错误信息
+                    $this->_view->exception =  $exception;
+                    echo $this->getView()->render(APP_PATH.'/views/error/error.html');
+            }
+        } else {
+            //禁止输出视图内容
+            Yaf_Dispatcher::getInstance()->enableView();
+            switch ($exception->getCode()) {
+                case YAF_ERR_AUTOLOAD_FAILED:
+                case YAF_ERR_NOTFOUND_MODULE:
+                case YAF_ERR_NOTFOUND_CONTROLLER:
+                case YAF_ERR_NOTFOUND_ACTION:
+                case YAF_ERR_NOTFOUND_VIEW:
+                    header('HTTP/1.1 404 Not Found');
+                    //记录日志
+                    Log::error('error',$exception->getMessage() . ' IN FILE ' . $exception->getFile());
+                    $this->_view->type='err404';
+                    $this->_view->display(APP_PATH.'/views/404.php');
+                    break;
+                default:
+                    header('HTTP/1.1 500 Internal Server Error');
+                    //记录文件错误日志
+                    Log::error('error',$exception->getMessage() . ' IN FILE ' . $exception->getFile() . ' ON LINE ' . $exception->getLine());                    
+                    //记录sentry错误日志
+                    $this->_view->type='error';
+                    $this->_view->display(APP_PATH.'/views/404.php');
+                    break;
+            }
         }
     }
-
-    private function _pageNotFound(){
-        $this->getResponse()->setHeader('HTTP/1.0 404 Not Found');
-        $this->_view->error = 'Page was not found';
-    }
-
-    private function _unknownError(){
-        $this->getResponse()->setHeader('HTTP/1.0 500 Internal Server Error');
-        $this->_view->error = 'Application Error';
-    }
-    
-    public  function writeLog($filename, $message='') {
-        $filename = PUB_PATH . "/log/PHPError{$filename}.log";
-        $datime = date("Y-m-d H:i:s")." ";
-        file_put_contents($filename, $datime.$message."\n", FILE_APPEND);
-    } 
 }
-
