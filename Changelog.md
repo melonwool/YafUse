@@ -5,6 +5,7 @@
 - 添加了路由rewrite示例（及配置）
 - 简单实现了Modue（/api/search/indx ）
 - library /components 区分
+- log 报错日志记录
 
 ##2014-7-23
 - 配置文件继承
