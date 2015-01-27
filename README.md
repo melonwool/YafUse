@@ -53,3 +53,6 @@ server {
 
 ### ErrorAction
 报错开启关闭在ini中有配置，可以记录为日志文件，需要有写权限。在Error.php实现。
+
+### user name and pws
+admin / 12345678
