@@ -10,6 +10,8 @@ Yaf 地址:https://github.com/laruence/php-yaf 请针对自己的php 版本进�
 - PDO数据库操作类(Mysql数据主从实现)
 - 简单的增删改查实现
 - 错误捕捉显示及日志记录
+- 数据库连接可以自主选择或者自己写个连接和操作类
+- 目前这个demo里面使用的是两个连接实现了读写分类操作,如果mysql使用了proxy实现的,建议还是用自己写的数据库操作类进行实现
 
 ## Requirement
 - Nginx

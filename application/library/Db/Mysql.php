@@ -68,11 +68,14 @@ class Db_Mysql
             $dsn .= ";dbname=$name";
             $conn = new PDO($dsn, $user, $password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            
             return $conn;
         } catch (PDOException $e) {
+            //抛出异常进行捕获
+            throw $e;
             return false;
         } catch (Exception $e) {
+            //抛出异常进行捕获
+            throw $e;
             return false;
         }
     }

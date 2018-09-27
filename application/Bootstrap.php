@@ -42,7 +42,9 @@ class Bootstrap extends Yaf_Bootstrap_Abstract {
             error_reporting(0);
             ini_set('display_errors', 'Off');
         }
-        set_error_handler(['Error', 'errorHandler']);
+        //异常捕获
+        Yaf_Loader::import(APP_PATH . '/library/Error.php');
+        set_exception_handler('errorHandler');
     }
     /**
      * [路由设置]
